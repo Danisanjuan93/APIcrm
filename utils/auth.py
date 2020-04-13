@@ -1,7 +1,16 @@
 import os
+from functools import wraps
 import jwt
+from flask import session, jsonify
 from datetime import datetime, timedelta
 from environment import ENV
+
+from utils.error_manager import return_error_code
+
+USER_ACCESS_ROLES = {
+    'user': 0,
+    'admin': 1
+}
 
 def encode_auth_token(user_id):
         try:
@@ -24,3 +33,13 @@ def decode_auth_token(auth_token):
         return payload['sub']
     except Exception:
         return False
+
+def requires_access_level(access_level):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if session.get('role') != access_level:
+                return jsonify({"error": 401, "msg": "Not enough permissions"}), 403
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
