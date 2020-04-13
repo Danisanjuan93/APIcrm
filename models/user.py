@@ -1,6 +1,10 @@
+import json
 import bcrypt
 
 from app import db
+
+import utils.errors_code as errors_code
+import utils.user_validator as validator
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -26,10 +30,23 @@ class User(db.Model):
             'id': self.id, 
             'name': self.name,
             'email': self.email,
-            'role': self.role,
-            'password': self.password
+            'role': self.role
         }
     
+    def update_user_values(self, new_data):
+        if new_data.get('name'):
+            self.name = new_data.get('name')
+        if new_data.get('email'):
+            self.email = new_data.get('email')
+        if new_data.get('password'):
+            if new_data.get('confirm_password'):
+                validator.validate_password(new_data.get('password'), new_data.get('confirm_password'))
+                self.password = bcrypt.hashpw(new_data.get('password').encode('utf-8'), bcrypt.gensalt())
+            else:
+                raise ValueError("To update user password should provide confirm_password", errors_code.CONFIRM_PASSWORD_MANDATORY)
+        if new_data.get('role'):
+            self.role = validator.validate_role(new_data.get('role'))
+
     @staticmethod
     def from_json_to_model(json):
         return User(name=json.get('name'), email=json.get('email'), 
