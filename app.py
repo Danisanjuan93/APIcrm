@@ -57,11 +57,20 @@ def update_user():
         return jsonify(return_error_code(exception)), 400
 
 @app.route("/user/register", methods=["POST"])
-@auth_utils.requires_access_level(auth_utils.USER_ACCESS_ROLES['admin'])
+@auth_utils.requires_access_level(auth_utils.USER_ACCESS_ROLES['user'])
 def register_user():
     try:
         user_controller.register_new_user(request.json)
         return jsonify({"status": "ok", "message": "User created"}), 200
+    except Exception as exception:
+        return jsonify(return_error_code(exception)), 400
+
+@app.route("/user", methods=["DELETE"])
+@auth_utils.requires_access_level(auth_utils.USER_ACCESS_ROLES['user'])
+def delete_user():
+    try:
+        user_controller.delete_user(request.json)
+        return jsonify({"status": "ok", "message": "User deleted"}), 200
     except Exception as exception:
         return jsonify(return_error_code(exception)), 400
 

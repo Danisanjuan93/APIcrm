@@ -41,6 +41,15 @@ def update_user(user_json):
 
     db.session.commit()
 
+def delete_user(user_json):
+    user = db.session.query(User).filter(User.email == user_json.get('email')).first()
+
+    if not user:
+        raise ValueError("User does not exists", errors_code.USER_DOES_NOT_EXISTS)
+
+    db.session.delete(user)
+    db.session.commit()
+
 def login_user(user_json):
     user_validator.login_user_required_fields_validator(user_json)
 
