@@ -38,7 +38,10 @@ def requires_access_level(access_level):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            if session.get('role') != access_level:
+            for role in access_level:
+                if session.get('role') == role:
+                    break
+            else:
                 return jsonify({"error": 401, "msg": "Not enough permissions"}), 403
             return f(*args, **kwargs)
         return decorated_function

@@ -43,7 +43,7 @@ class User(db.Model):
                 validator.validate_password(new_data.get('password'), new_data.get('confirm_password'))
                 self.password = bcrypt.hashpw(new_data.get('password').encode('utf-8'), bcrypt.gensalt())
             else:
-                raise ValueError("To update user password should provide confirm_password", errors_code.CONFIRM_PASSWORD_MANDATORY)
+                raise ValueError("To update user password should provide confirm_password", errors_code.USER_CONFIRM_PASSWORD_MANDATORY)
         if new_data.get('role'):
             self.role = validator.validate_role(new_data.get('role'))
 

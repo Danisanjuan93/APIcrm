@@ -7,13 +7,13 @@ def user_required_fields_validator(user_json):
     user_json_keys = user_json.keys()
 
     if 'name' not in user_json_keys:
-        raise ValueError("Field name is required to register new user", errors_code.NAME_MANDATORY)
+        raise ValueError("Field name is required to register new user", errors_code.USER_NAME_MANDATORY)
     if 'email' not in user_json_keys or not validate_email(user_json.get('email')):
-        raise ValueError("Field email is required to register new user and should be a valid email", errors_code.EMAIL_MANDATORY)
+        raise ValueError("Field email is required to register new user and should be a valid email", errors_code.USER_EMAIL_MANDATORY)
     if 'password' not in user_json_keys:
-        raise ValueError("Field password is required to register new user", errors_code.PASSWORD_MANDATORY)
+        raise ValueError("Field password is required to register new user", errors_code.USER_PASSWORD_MANDATORY)
     if 'confirm_password' not in user_json_keys:
-        raise ValueError("Field confirm_password is required to register new user", errors_code.CONFIRM_PASSWORD_MANDATORY)
+        raise ValueError("Field confirm_password is required to register new user", errors_code.USER_CONFIRM_PASSWORD_MANDATORY)
     
     validate_password(user_json.get('password'), user_json.get('confirm_password'))
 
@@ -21,9 +21,9 @@ def login_user_required_fields_validator(user_json):
     user_json_keys = user_json.keys()
 
     if 'email' not in user_json_keys or not validate_email(user_json.get('email')):
-        raise ValueError("Field email is required to register new user and should be a valid email", errors_code.EMAIL_MANDATORY)
+        raise ValueError("Field email is required to register new user and should be a valid email", errors_code.USER_EMAIL_MANDATORY)
     if 'password' not in user_json_keys:
-        raise ValueError("Field confirm_password is required to register new user", errors_code.CONFIRM_PASSWORD_MANDATORY)
+        raise ValueError("Field confirm_password is required to register new user", errors_code.USER_CONFIRM_PASSWORD_MANDATORY)
     
 def validate_email(email):
     if email is None or not re.match(r"[^@]+@[^@]+\.[^@]+", email):
