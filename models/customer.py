@@ -41,9 +41,9 @@ class Customer(db.Model):
     
     def update_customer_values(self, new_data):
         if new_data.get('name'):
-            self.name = new_data.get('name')
+            self.name = new_data.get('name').strip()
         if new_data.get('surname'):
-            self.surname = new_data.get('surname')
+            self.surname = new_data.get('surname').strip()
         self.updated_by = session['user_id']
         self.last_update_date = datetime.now()
 
