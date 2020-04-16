@@ -13,8 +13,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-from models.user import User
-
 import controllers.user as user_controller
 import controllers.customer as customer_controller
 
