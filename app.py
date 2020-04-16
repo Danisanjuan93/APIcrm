@@ -40,7 +40,7 @@ def auth_error():
 def get_users():
     try:
         users = user_controller.get_all_users()
-        return jsonify(users), 200
+        return users
     except Exception as exception:
         return jsonify(return_error_code(exception)), 400
 
@@ -100,7 +100,7 @@ def login_user():
 def get_customers():
     try:
         customers = customer_controller.get_all_customer()
-        return jsonify(customers), 200
+        return customers
     except Exception as exception:
         return jsonify(return_error_code(exception)), 400
 
@@ -110,7 +110,7 @@ def get_customers():
 def get_customer_by_id(id):
     try:
         customer = customer_controller.get_customer_by_id(id)
-        return jsonify(customer), 200
+        return customer
     except Exception as exception:
         return jsonify(return_error_code(exception)), 400
 
