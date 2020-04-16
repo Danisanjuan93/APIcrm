@@ -5,14 +5,10 @@ from flask import Flask, request, g, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_httpauth import HTTPTokenAuth
 
-from environment import ENV
-
-
 
 app = Flask(__name__)
 auth = HTTPTokenAuth(scheme='Token')
-
-app.config.from_object(ENV.APP_SETTINGS)
+app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)

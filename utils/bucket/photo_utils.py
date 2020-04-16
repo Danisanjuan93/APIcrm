@@ -1,16 +1,16 @@
+import os
 import base64
 from datetime import datetime
 
 from google.cloud import storage
 
-from environment import ENV
 
 def upload_customer_photo(customer, bs64_photo):
     storage_client = storage.Client()
     path_to_storage = "photos/{}-{}-{}".format(customer.id, customer.name, customer.surname)
 
     # if 'www.' not in bs64_photo and 'http:' not in bs64_photo and 'https:/' not in bs64_photo:
-    bucket = storage_client.get_bucket(ENV.BUCKET_NAME)
+    bucket = storage_client.get_bucket(os.environ['BUCKET_NAME'])
     blobs = bucket.list_blobs(prefix="{}/".format(path_to_storage))
     for blob in blobs:
         blob.delete()

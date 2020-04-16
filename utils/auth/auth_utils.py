@@ -3,7 +3,6 @@ from functools import wraps
 import jwt
 from flask import session, jsonify
 from datetime import datetime, timedelta
-from environment import ENV
 
 from utils.errors.error_manager import return_error_code
 import utils.errors.errors_code as errors_code
@@ -22,7 +21,7 @@ def encode_auth_token(user_id):
             }
             return jwt.encode(
                 payload,
-                ENV.SECRET_KEY,
+                os.environ['SECRET_KEY'],
                 algorithm='HS256'
             )
         except Exception as e:
@@ -30,7 +29,7 @@ def encode_auth_token(user_id):
     
 def decode_auth_token(auth_token):
     try:
-        payload = jwt.decode(auth_token, ENV.SECRET_KEY)
+        payload = jwt.decode(auth_token, os.environ['SECRET_KEY'])
         return payload['sub']
     except Exception:
         return False
