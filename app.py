@@ -104,6 +104,16 @@ def get_customers():
     except Exception as exception:
         return jsonify(return_error_code(exception)), 400
 
+@app.route("/customer/<id>", methods=["GET"])
+@auth.login_required
+@auth_utils.requires_access_level([auth_utils.USER_ACCESS_ROLES['user'], auth_utils.USER_ACCESS_ROLES['admin']])
+def get_customer_by_id(id):
+    try:
+        customer = customer_controller.get_customer_by_id(id)
+        return jsonify(customer), 200
+    except Exception as exception:
+        return jsonify(return_error_code(exception)), 400
+
 @app.route("/customer", methods=["POST"])
 @auth.login_required
 @auth_utils.requires_access_level([auth_utils.USER_ACCESS_ROLES['user'], auth_utils.USER_ACCESS_ROLES['admin']])
