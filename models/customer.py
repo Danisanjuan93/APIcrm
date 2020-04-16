@@ -12,8 +12,8 @@ class Customer(db.Model):
     name = db.Column(db.String(), nullable=False)
     surname = db.Column(db.String(), nullable=False)
     photo = db.Column(db.String())
-    created_by = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    updated_by = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    created_by = db.Column(db.String(), nullable=False)
+    updated_by = db.Column(db.String(), nullable=False)
     creation_date = db.Column(db.DateTime(), default=datetime.now())
     last_update_date = db.Column(db.DateTime(), default=datetime.now())
 
@@ -51,6 +51,6 @@ class Customer(db.Model):
 
     @staticmethod
     def from_json_to_model(json):
-        return Customer(name=json.get('name'), surname=json.get('surname'), created_by=session['user_id'],
-                        updated_by=session['user_id'])
+        return Customer(name=json.get('name'), surname=json.get('surname'), created_by=session['email'],
+                        updated_by=session['email'])
 

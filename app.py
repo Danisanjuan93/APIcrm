@@ -13,8 +13,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-from models.user import User
-
 import controllers.user as user_controller
 import controllers.customer as customer_controller
 
@@ -40,7 +38,7 @@ def auth_error():
 def get_users():
     try:
         users = user_controller.get_all_users()
-        return jsonify(users), 200
+        return users
     except Exception as exception:
         return jsonify(return_error_code(exception)), 400
 
@@ -100,7 +98,17 @@ def login_user():
 def get_customers():
     try:
         customers = customer_controller.get_all_customer()
-        return jsonify(customers), 200
+        return customers
+    except Exception as exception:
+        return jsonify(return_error_code(exception)), 400
+
+@app.route("/customer/<id>", methods=["GET"])
+@auth.login_required
+@auth_utils.requires_access_level([auth_utils.USER_ACCESS_ROLES['user'], auth_utils.USER_ACCESS_ROLES['admin']])
+def get_customer_by_id(id):
+    try:
+        customer = customer_controller.get_customer_by_id(id)
+        return customer
     except Exception as exception:
         return jsonify(return_error_code(exception)), 400
 
