@@ -14,6 +14,7 @@ auth = HTTPTokenAuth(scheme='Token')
 
 app.config.from_object(ENV.APP_SETTINGS)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 db = SQLAlchemy(app)
 
 from models.user import User

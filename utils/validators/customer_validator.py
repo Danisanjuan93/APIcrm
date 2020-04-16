@@ -3,6 +3,11 @@ import base64
 import utils.errors.errors_code as errors_code
 import utils.validators.general_validator as validator
 
+
+def get_customer_by_id_fields_validator(customer_id):
+    if not validator.validate_integer(customer_id):
+        raise ValueError("Field id is required to get a customer and should be a valid integer")
+
 def new_customer_fields_validator(customer_json):
     if not validator.validate_string(customer_json.get('name')):
         raise ValueError("Field name is mandatory and must be a valid string", errors_code.CUSTOMER_NAME_MANDATORY)

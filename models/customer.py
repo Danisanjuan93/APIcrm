@@ -3,6 +3,7 @@ from flask import session
 from datetime import datetime
 
 from app import db
+from models.user import User
 
 class Customer(db.Model):
     __tablename__ = 'customers'
@@ -36,7 +37,8 @@ class Customer(db.Model):
             'name': self.name,
             'surname': self.surname,
             'photo': self.photo,
-            'created_by': self.created_by
+            'created_by': self.created_by.serialize() if isinstance(self.created_by, User) else self.created_by,
+            'updated_by': self.updated_by.serialize() if isinstance(self.updated_by, User) else self.updated_by
         }
     
     def update_customer_values(self, new_data):
