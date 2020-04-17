@@ -40,7 +40,7 @@ class User(db.Model):
             self.email = new_data.get('email').strip()
         if new_data.get('password'):
             self.password = bcrypt.hashpw(new_data.get('password').encode('utf-8'), bcrypt.gensalt())
-        if new_data.get('role'):
+        if new_data.get('role') is not None:
             self.role = int(new_data.get('role'))
 
     @staticmethod

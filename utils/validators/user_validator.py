@@ -10,6 +10,10 @@ def login_user_fields_validator(user_json):
     if not validator.validate_string(user_json.get('password')):
         raise ValueError("Field confirm_password is required to register new user", errors_code.USER_CONFIRM_PASSWORD_MANDATORY)
 
+def get_user_by_id_fields_validator(user_id):
+    if not validator.validate_integer(user_id):
+        raise ValueError("Field id is required to get an user by id and should be a valid integer")
+
 def new_user_fields_validator(user_json):
     if not validator.validate_string(user_json.get('name')):
         raise ValueError("Field name is required to register new user and must be a valid string", errors_code.USER_NAME_MANDATORY)
