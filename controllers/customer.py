@@ -6,7 +6,7 @@ from models.user import User
 from models.customer import Customer
 import utils.validators.customer_validator as customer_validator
 import utils.errors.errors_code as errors_code
-from utils.bucket.photo_utils import upload_customer_photo
+from utils.bucket.photo_utils import upload_customer_photo, remove_customer_photo
 from utils.errors.error_manager import return_error_code
 
 def get_all_customer():
@@ -79,6 +79,8 @@ def delete_customer(customer_id):
 
     if not customer:
         return return_error_code(ValueError("Customer does not exists", errors_code.CUSTOMER_DOES_NOT_EXISTS)), 404
+
+    remove_customer_photo(customer)
 
     db.session.delete(customer)
     db.session.commit()
