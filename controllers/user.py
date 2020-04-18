@@ -80,13 +80,12 @@ def delete_user(user_id):
 
 def login_user(user_json):
     user_validator.login_user_fields_validator(user_json)
-
     user = db.session.query(User).filter(User.email == user_json.get("email")).first()
 
     if not user or not bcrypt.checkpw(user_json.get('password').encode('utf-8'), user.password):
         return error_manager.return_error_code(ValueError("User or password are invalids", errors_code.VALIDATION_INVALID_PASSWORD_MATCH)), 409
 
-    return [auth_utils.encode_auth_token(user.id).decode("utf-8"), user.email, user.role]
+    return jsonify({"token": auth_utils.encode_auth_token(user.id).decode("utf-8")}), 200
 
 def change_user_status(user_json):
     user_validator.change_status_fields_validator(user_json)
@@ -96,10 +95,8 @@ def change_user_status(user_json):
     if not user:
         return error_manager.return_error_code(ValueError("User does not exists", errors_code.USER_DOES_NOT_EXISTS)), 404
 
-    user.update_user_values(user_json)
+    user.role = int(user_json.get('role'))
 
     db.session.commit()
-
-    session['role'] = user.role
 
     return jsonify({"status": "ok", "message": "User role updated"}), 200

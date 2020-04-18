@@ -28,6 +28,7 @@ def verify_token(token):
     current_user = user_controller.get_user_by_id(user_id)
     if current_user:
         session['user_id'] = int(user_id)
+        session['role'] = int(current_user.role)
         return True
     else:
         return False
@@ -90,9 +91,8 @@ def change_user_status():
 @app.route("/user/login", methods=["POST"])
 def login_user():
     try:
-        token, email, role = user_controller.login_user(request.json)
-        session['role'] = role
-        return jsonify({"token": token}), 200
+        response = user_controller.login_user(request.json)
+        return response
     except Exception as exception:
         return jsonify(return_error_code(exception)), 400
 
