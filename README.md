@@ -36,7 +36,7 @@ Every time we need to update database tables, we should run command `make update
 Since you need an user to start making requests, you should execute the nexts commands:
 * `docker exec -it DB-CONTAINER bash` (in order to enter into db container)
 * `psql -U POSTGRES_USER -W -d POSTGRES_DB` (connet to database, after this command you will prompt to enter POSTGRES_PASSWORD)
-* `insert into users (id, name, email, password, role) values (4, 'admin', 'admin@admin.es', '\x243262243132243332445434796c4f45517a68465763663572616771654a315434662e637549764e573659526c766a7a53664a53466e582e65544f4f', 1);`
+* `insert into users (name, email, password, role) values ('admin', 'admin@admin.es', '\x243262243132243332445434796c4f45517a68465763663572616771654a315434662e637549764e573659526c766a7a53664a53466e582e65544f4f', 1);`
 
 It will create an admin user with:
 * **email**: admin@admin.es

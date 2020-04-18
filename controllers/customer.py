@@ -27,8 +27,8 @@ def get_customer_by_id(id):
     if not customer:
         return return_error_code(ValueError("Customer does not exists", errors_code.CUSTOMER_DOES_NOT_EXISTS)), 404
 
-    created_by = db.session.query(User).filter(User.email == customer.created_by).first()
-    updated_by = db.session.query(User).filter(User.email == customer.updated_by).first()
+    created_by = db.session.query(User).filter(User.id == customer.created_by).first()
+    updated_by = db.session.query(User).filter(User.id == customer.updated_by).first()
 
     if created_by:
         customer.created_by = created_by
@@ -52,6 +52,8 @@ def create_new_customer(customer_json):
 
     db.session.commit()
 
+    return jsonify({"status": "ok", "message": "Customer created"}), 200
+
 def update_customer(customer_json):
     customer_validator.update_customer_fields_validator(customer_json)
 
@@ -68,6 +70,8 @@ def update_customer(customer_json):
 
     db.session.commit()
 
+    return jsonify({"status": "ok", "message": "Customer updated"}), 200
+
 def delete_customer(customer_id):
     customer_validator.delete_customer_fields_validator(customer_id)
 
@@ -78,3 +82,5 @@ def delete_customer(customer_id):
 
     db.session.delete(customer)
     db.session.commit()
+
+    return jsonify({"status": "ok", "message": "Customer deleted"}), 200
