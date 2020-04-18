@@ -9,7 +9,6 @@ def upload_customer_photo(customer, bs64_photo):
     storage_client = storage.Client()
     path_to_storage = "photos/{}-{}-{}".format(customer.id, customer.name, customer.surname)
 
-    # if 'www.' not in bs64_photo and 'http:' not in bs64_photo and 'https:/' not in bs64_photo:
     bucket = storage_client.get_bucket(os.environ['BUCKET_NAME'])
     blobs = bucket.list_blobs(prefix="{}/".format(path_to_storage))
     for blob in blobs:
@@ -25,3 +24,14 @@ def upload_customer_photo(customer, bs64_photo):
 
     bucket.blob(photo_name).make_public()
     return bucket.blob(photo_name).public_url
+
+def remove_customer_photo(customer):
+    storage_client = storage.Client()
+    path_to_storage = "photos"
+
+    bucket = storage_client.get_bucket(os.environ['BUCKET_NAME'])
+    blobs = bucket.list_blobs(prefix="{}/".format(path_to_storage))
+    for blob in blobs:
+        if blob.name.split('/')[1] == f"{customer.id}-{customer.name}-{customer.surname}":
+            blob.delete()
+            break
