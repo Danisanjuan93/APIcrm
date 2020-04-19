@@ -19,6 +19,9 @@ def new_customer_fields_validator(customer_json):
         raise ValueError("Field photo must be a valid base64 string", errors_code.VALIDATION_INVALID_BASE64)
 
 def update_customer_fields_validator(customer_json):
+    if not customer_json.get('id'):
+        raise ValueError("Field id is required to update a customer", errors_code.CUSTOMER_ID_MANDATORY)
+
     if not validator.validate_string(customer_json.get('name'), nullable=True):
         raise ValueError("Field name is mandatory or must be a valid string", errors_code.CUSTOMER_NAME_MANDATORY)
     

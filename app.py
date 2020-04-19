@@ -25,10 +25,12 @@ def verify_token(token):
     if not user_id:    
         return False
 
-    current_user = user_controller.get_user_by_id(user_id)
-    if current_user:
-        session['user_id'] = int(user_id)
-        session['role'] = int(current_user.role)
+    response = user_controller.get_user_by_id(user_id)
+    
+    if response[1] == 200:
+        user_decoded = json.loads(response[0].response[0].decode("UTF-8"))
+        session['user_id'] = int(user_decoded['id'])
+        session['role'] = int(user_decoded['role'])
         return True
     else:
         return False
@@ -45,6 +47,16 @@ def get_users():
     try:
         users = user_controller.get_all_users()
         return users
+    except Exception as exception:
+        return jsonify(return_error_code(exception)), 400
+
+@app.route("/user/<id>", methods=["GET"])
+@auth.login_required
+@auth_utils.requires_access_level([auth_utils.USER_ACCESS_ROLES['admin']])
+def get_user_by_id(id):
+    try:
+        user = user_controller.get_user_by_id(id)
+        return user
     except Exception as exception:
         return jsonify(return_error_code(exception)), 400
 

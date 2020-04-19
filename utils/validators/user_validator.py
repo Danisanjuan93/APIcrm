@@ -8,7 +8,7 @@ def login_user_fields_validator(user_json):
     if not validator.validate_string(user_json.get('email')) or not validator.validate_email(user_json.get('email')):
         raise ValueError("Field email is required to register new user and should be a valid email", errors_code.USER_EMAIL_MANDATORY)
     if not validator.validate_string(user_json.get('password')):
-        raise ValueError("Field confirm_password is required to register new user", errors_code.USER_CONFIRM_PASSWORD_MANDATORY)
+        raise ValueError("Field password is required to register new user", errors_code.USER_CONFIRM_PASSWORD_MANDATORY)
 
 def get_user_by_id_fields_validator(user_id):
     if not validator.validate_integer(user_id):
