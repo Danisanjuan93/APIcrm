@@ -24,7 +24,12 @@ def get_all_users():
 def get_user_by_id(user_id):
     user_validator.get_user_by_id_fields_validator(user_id)
 
-    return db.session.query(User).filter(User.id == user_id).first()
+    user = db.session.query(User).filter(User.id == user_id).first()
+
+    if not user:
+        return error_manager.return_error_code(ValueError("User does not exists", errors_code.USER_DOES_NOT_EXISTS)), 404
+
+    return jsonify(user.serialize()), 200
 
 def register_new_user(user_json):
     user_validator.new_user_fields_validator(user_json)
