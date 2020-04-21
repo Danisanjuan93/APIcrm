@@ -1,5 +1,6 @@
 import os
 import jwt
+import json
 
 from flask import Flask, request, g, jsonify, session
 from flask_sqlalchemy import SQLAlchemy
